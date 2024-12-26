@@ -1,0 +1,61 @@
+from datetime import datetime
+
+class CalorieCounter:
+    def __init__(self):
+        self.log = {}
+
+    def log_food(self, date, food, calories):
+        """Log a food item and its calorie count for a specific date."""
+        if date not in self.log:
+            self.log[date] = []
+        self.log[date].append({"food": food, "calories": calories})
+        print(f"Logged {calories} calories for {food} on {date}.")
+
+    def view_day_log(self, date):
+        """View all food entries and total calories for a specific date."""
+        if date not in self.log or not self.log[date]:
+            print(f"No entries found for {date}.")
+            return
+
+        print(f"Calorie Log for {date}:")
+        total_calories = 0
+        for entry in self.log[date]:
+            print(f"  {entry['food']}: {entry['calories']} calories")
+            total_calories += entry['calories']
+        print(f"Total Calories: {total_calories}")
+
+if __name__ == "__main__":
+    cc = CalorieCounter()
+
+    while True:
+        print("\nCalorie Counter Tool")
+        print("1. Log Food")
+        print("2. View Day Log")
+        print("3. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            date = input("Enter date (YYYY-MM-DD): ")
+            try:
+                datetime.strptime(date, '%Y-%m-%d')  # Validate date format
+                food = input("Enter food item: ")
+                calories = int(input("Enter calories: "))
+                cc.log_food(date, food, calories)
+            except ValueError:
+                print("Invalid input. Please try again.")
+
+        elif choice == "2":
+            date = input("Enter date (YYYY-MM-DD): ")
+            try:
+                datetime.strptime(date, '%Y-%m-%d')  # Validate date format
+                cc.view_day_log(date)
+            except ValueError:
+                print("Invalid date format. Please try again.")
+
+        elif choice == "3":
+            print("Exiting Calorie Counter. Stay healthy!")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
